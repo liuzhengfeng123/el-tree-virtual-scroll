@@ -1,17 +1,28 @@
-const { defineConfig, globalIgnores } = require('eslint/config')
+const { defineConfig } = require('eslint/config')
 const js = require('@eslint/js')
 const plguinVue = require('eslint-plugin-vue')
 const globals = require('globals')
 
 module.exports = defineConfig([
-  // {
-  //   files: ['src/components/Tree/tree-node.vue'],
-  //   extends: [
-  //     ...plguinVue.configs['flat/vue2-recommended']
-  //   ]
-  // },
   {
-    files: ['src/components/Tree/model/tree-store.js'],
+    files: ['src/components/Tree/**'],
+    extends: [
+      ...plguinVue.configs['flat/vue2-recommended']
+    ],
+    rules: {
+      'vue/require-default-prop': "off",
+      "vue/max-attributes-per-line": ["error", {
+        "singleline": {
+          "max": 3
+        },
+        "multiline": {
+          "max": 2
+        }
+      }]
+    }
+  },
+  {
+    files: ['src/**'],
     plugins: {
       js
     },
@@ -23,6 +34,9 @@ module.exports = defineConfig([
       globals: {
         ...globals.browser
       }
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: "error"
     },
     rules: {
       // 基本规则
@@ -41,7 +55,7 @@ module.exports = defineConfig([
 
       // 最佳实践
       'eqeqeq': 'error', // 必须使用 === 和 !==
-      'curly': 'error', // 必须使用大括号
+      // 'curly': 'error', // 必须使用大括号
       'default-case': 'error', // switch必须有default
       'dot-notation': 'error', // 强制使用点号表示法
       'no-eval': 'error', // 禁止使用eval

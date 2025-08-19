@@ -54,7 +54,7 @@ export default {
       defaultExpandedKeys: [4],
       defaultCheckedKeys: [1, 5, 20],
       defaultExpandedKeys: ['二级 1-1'],
-      defaultCheckedKeys: ['三级 2-1-1', '三级 3-2-1', '一级 4'],
+      defaultCheckedKeys: ['package.json', 'model', 'examples'],
       emptyText: 'no data',
       // defaultCheckedKeys: ['三级 2-1-1', '三级 3-2-1'],
       data: [
