@@ -4,6 +4,7 @@ const plguinVue = require('eslint-plugin-vue')
 const globals = require('globals')
 
 module.exports = defineConfig([
+  // 校验 .vue 文件
   {
     files: ['src/components/Tree/**'],
     extends: [
@@ -21,6 +22,7 @@ module.exports = defineConfig([
       }]
     }
   },
+  // 校验 js 代码
   {
     files: ['src/**'],
     plugins: {
