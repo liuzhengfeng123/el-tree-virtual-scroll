@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 
-import ElTreeVirtualScroll from './components/Tree'
+import ElTreeVirtualScroll from './components/tree'
 Vue.component('ElTreeVirtualScroll', ElTreeVirtualScroll)
 
 window.Vue = Vue

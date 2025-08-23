@@ -2,3 +2,4 @@
 2、与 element-ui i18 同步
 3、设置 el-checkbox 的 tabindex = -1
 4、去掉 throttle
+5、看看 aria-hidden!

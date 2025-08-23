@@ -7,8 +7,6 @@ import {
   NODE_KEY
 } from './util'
 
-let nodeIdSeed = 0
-
 function getPropertyFromData(node, prop) {
   const props = node.store.props || {}
   const data = node.data || {}
@@ -65,6 +63,8 @@ function getChildState(childNodes) {
   }
   return { all, none, allWithoutDisable, half: !all && !none }
 }
+
+let nodeIdSeed = 0
 
 export default class Node {
   constructor(options) {

@@ -3,11 +3,12 @@
     <!-- <h1>non-lazy-page</h1> -->
     <el-tree-virtual-scroll
       ref="tree"
-      :data="data"
+      :key="key"
+      :data="(data)"
       :props="defaultProps"
       :indent="undefined"
       :node-key="('fileName', 'id', 'label')"
-      :default-expand-all="defaultExpandAll"
+      :default-expand-all="(defaultExpandAll, true)"
       :default-expanded-keys="defaultExpandedKeys"
       :default-checked-keys="defaultCheckedKeys"
       :show-checkbox="true"
@@ -16,9 +17,12 @@
       :check-strictly="checkStrictly"
       :highlightCurrent="false"
       :current-node-key="currentNodeKey"
-      :accordion="accordion"
+      :accordion="(accordion, false)"
       :emptyText="emptyText"
-      :draggable="true"
+      :draggable="false"
+      :filter-node-method="filterNode"
+      :height="null"
+      :renderAfterExpand="true"
     >
       <!-- @node-drag-leave="(a, b, c) => log('node-drag-leave: ', {
         draggingNode: a.label,
@@ -34,6 +38,7 @@
     </el-tree-virtual-scroll>
     <hr>
     <el-button type="primary" @click="handleClick">get CurrentNode</el-button>
+    <el-input v-model="searchText" @input="handleInput"></el-input>
   </div>
 </template>
 <script>
@@ -47,16 +52,19 @@ export default {
         label: 'label',
         disabled: 'isUnable'
       },
-      accordion: false,
+      searchText: '',
+      key: 0,
+      accordion: true,
       currentNodeKey: 13,
       defaultExpandAll: true,
       checkStrictly: false,
       defaultExpandedKeys: [4],
       defaultCheckedKeys: [1, 5, 20],
-      defaultExpandedKeys: ['二级 1-1'],
-      defaultCheckedKeys: ['package.json', 'model', 'examples'],
+      // defaultExpandedKeys: ['二级 1-1'],
+      defaultExpandedKeys: [],
+      // defaultCheckedKeys: ['package.json', 'model', 'examples'],
       emptyText: 'no data',
-      // defaultCheckedKeys: ['三级 2-1-1', '三级 3-2-1'],
+      defaultCheckedKeys: ['三级 2-1-1', '三级 3-2-1'],
       data: [
         {
           label: "一级 1",
@@ -126,7 +134,7 @@ export default {
           label: "一级 4",
         },
       ],
-      data: fileStructor,
+      data2: fileStructor,
       data2: [
         {
           label: "一级 1",
@@ -224,6 +232,12 @@ export default {
       //   return false
       // }
       return true
+    },
+    handleInput(val) {
+      this.$refs.tree.filter(val)
+    },
+    filterNode(val, data) {
+      return data[this.defaultProps.label].indexOf(val) > -1
     }
   },
   created() {},

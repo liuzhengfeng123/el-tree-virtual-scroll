@@ -17,7 +17,7 @@ module.exports = {
       '@': path.resolve(__dirname, '../src')
     },
   },
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     static: '../examples'
   },

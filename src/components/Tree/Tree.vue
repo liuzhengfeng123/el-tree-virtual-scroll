@@ -9,22 +9,33 @@
     }"
     role="tree"
   >
-    <tree-node v-for="child in root.childNodes" :key="getNodeKey(child)" :node="child" />
-    <div v-if="isEmpty" class="el-tree__empty-block">
-      <span class="el-tree__empty-text">{{ emptyText }}</span>
+    <div v-if="height" class="virtual-tree-wrapper">
+      <virtual-tree-node
+        v-for="node in virtualNodes"
+        :key="getNodeKey(node)"
+        :node="node"
+      />
     </div>
-    <div v-show="dragState.showDropIndicator" ref="dropIndicator" class="el-tree__drop-indicator" />
+    <div v-else class="normal-tree">
+      <tree-node v-for="child in root.childNodes" :key="getNodeKey(child)" :node="child" />
+      <div v-if="isEmpty" class="el-tree__empty-block">
+        <span class="el-tree__empty-text">{{ emptyText }}</span>
+      </div>
+      <div v-show="dragState.showDropIndicator" ref="dropIndicator" class="el-tree__drop-indicator" />
+    </div>
   </div>
 </template>
 <script>
-import TreeStore from './model/tree-store.js'
-import TreeNode from './tree-node.vue'
+import TreeStore from './model/tree-store'
+import TreeNode from './tree-node'
+import VirtualTreeNode from './virtual-tree-node'
 import { findNearestComponent, getNodeKey, addClass, removeClass } from './model/util.js'
 
 export default {
   name: 'VirtulTree',
   components: {
-    TreeNode
+    TreeNode,
+    VirtualTreeNode
   },
   props: {
     data: Array,
@@ -84,7 +95,8 @@ export default {
       default: false
     },
     allowDrag: Function,
-    allowDrop: Function
+    allowDrop: Function,
+    height: Number
   },
   data() {
     return {
@@ -101,6 +113,24 @@ export default {
     isEmpty() {
       const { childNodes } = this.root
       return !childNodes || childNodes.length === 0 || childNodes.every(({ visible }) => !visible)
+    },
+    virtualNodes() {
+      function traverse(children) {
+        let ret = []
+        if(Array.isArray(children)) {
+          children.forEach(child => {
+            if(child.visible) {
+              ret.push(child)
+            }
+            if(child.expanded) {
+              ret = ret.concat(traverse(child.childNodes))
+            }
+          })
+        }
+        return ret
+      }
+
+      return traverse(this.root?.childNodes || [])
     }
   },
   watch: {
