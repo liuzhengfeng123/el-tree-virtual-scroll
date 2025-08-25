@@ -9,33 +9,39 @@
     }"
     role="tree"
   >
-    <div v-if="height" class="virtual-tree-wrapper">
-      <virtual-tree-node
-        v-for="node in virtualNodes"
-        :key="getNodeKey(node)"
-        :node="node"
-      />
-    </div>
+    <virtual-list
+      v-if="height"
+      :height="height"
+      :filter-nodes="filterNodes"
+      :item-size="itemSize"
+      :node-key="nodeKey"
+      :is-reset-scroll-cache="isResetScrollCache"
+      @reset="isResetScrollCache = false"
+    />
     <div v-else class="normal-tree">
       <tree-node v-for="child in root.childNodes" :key="getNodeKey(child)" :node="child" />
       <div v-if="isEmpty" class="el-tree__empty-block">
         <span class="el-tree__empty-text">{{ emptyText }}</span>
       </div>
-      <div v-show="dragState.showDropIndicator" ref="dropIndicator" class="el-tree__drop-indicator" />
+      <div
+        v-show="dragState.showDropIndicator"
+        ref="dropIndicator"
+        class="el-tree__drop-indicator"
+      />
     </div>
   </div>
 </template>
 <script>
 import TreeStore from './model/tree-store'
 import TreeNode from './tree-node'
-import VirtualTreeNode from './virtual-tree-node'
+import VirtualList from './virutal-list'
 import { findNearestComponent, getNodeKey, addClass, removeClass } from './model/util.js'
 
 export default {
   name: 'VirtulTree',
   components: {
     TreeNode,
-    VirtualTreeNode
+    VirtualList
   },
   props: {
     data: Array,
@@ -96,7 +102,11 @@ export default {
     },
     allowDrag: Function,
     allowDrop: Function,
-    height: Number
+    height: [Number, String],
+    itemSize: {
+      type: Number,
+      default: 26
+    }
   },
   data() {
     return {
@@ -106,7 +116,8 @@ export default {
         draggingNode: null,
         dropNode: null,
         allowDrop: true
-      }
+      },
+      isResetScrollCache: false
     }
   },
   computed: {
@@ -114,15 +125,15 @@ export default {
       const { childNodes } = this.root
       return !childNodes || childNodes.length === 0 || childNodes.every(({ visible }) => !visible)
     },
-    virtualNodes() {
+    filterNodes() {
       function traverse(children) {
         let ret = []
-        if(Array.isArray(children)) {
-          children.forEach(child => {
-            if(child.visible) {
+        if (Array.isArray(children)) {
+          children.forEach((child) => {
+            if (child.visible) {
               ret.push(child)
             }
-            if(child.expanded) {
+            if (child.expanded) {
               ret = ret.concat(traverse(child.childNodes))
             }
           })
@@ -177,7 +188,9 @@ export default {
         // setData is required for draggable to work in FireFox
         // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
         event.dataTransfer.setData('text/plain', '')
-      } catch (e) {e}
+      } catch (e) {
+        e
+      }
       dragState.draggingNode = treeNode
       this.$emit('node-drag-start', treeNode.node, event)
     })
@@ -318,6 +331,7 @@ export default {
       if (!this.filterNodeMethod)
         throw new Error('[El-Tree-Vritual-Scroll Warn] filterNodeMethod is required when filter')
       this.store.filter(value)
+      this.isResetScrollCache = true
     },
     getCheckedNodes(leafOnly, includeHalfChecked) {
       return this.store.getCheckedNodes(leafOnly, includeHalfChecked)

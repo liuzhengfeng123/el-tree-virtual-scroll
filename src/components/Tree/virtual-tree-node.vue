@@ -9,6 +9,7 @@
       'is-checked': !node.disabled && node.checked
     }"
     tabindex="-1"
+    :draggable="tree.draggable"
   >
     <div
       class="el-tree-node__content"
@@ -90,7 +91,7 @@ export default {
     }
   },
   created() {
-    this.tree = this.$parent
+    this.tree = this.$parent.tree
     this.oldChecked = this.node.checked
     this.oldIndeterminate = this.node.indeterminate
   },
