@@ -19,11 +19,14 @@
       :current-node-key="currentNodeKey"
       :accordion="(accordion, false)"
       :emptyText="emptyText"
-      :draggable="false"
+      :draggable="true"
       :filter-node-method="filterNode"
       :height="null"
       :renderAfterExpand="true"
     >
+    <template v-slot="{node, data}">
+      <span>{{ data.label }} - 123</span>
+    </template>
       <!-- @node-drag-leave="(a, b, c) => log('node-drag-leave: ', {
         draggingNode: a.label,
         leaveNode: b.label
@@ -37,8 +40,8 @@
       </template> -->
     </el-tree-virtual-scroll>
     <hr>
-    <el-button type="primary" @click="handleClick">get CurrentNode</el-button>
-    <el-input v-model="searchText" @input="handleInput"></el-input>
+    <!-- <el-button type="primary" @click="handleClick">get CurrentNode</el-button>
+    <el-input v-model="searchText" @input="handleInput"></el-input> -->
   </div>
 </template>
 <script>

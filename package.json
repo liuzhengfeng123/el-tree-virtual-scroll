@@ -20,7 +20,10 @@
   "author": "liuzhengfeng <563596927@qq.com>",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/preset-env": "^7.28.3",
     "@eslint/js": "^9.33.0",
+    "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "element-ui": "^2.15.14",
     "eslint": "^9.33.0",

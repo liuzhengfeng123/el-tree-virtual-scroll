@@ -1,6 +1,7 @@
 <template>
   <div class="">
     <el-input v-model="searchText"></el-input>
+    <!-- <el-button type="primary" @click="$refs.tree.collapseAllNode()">click me</el-button> -->
     <el-tree-virtual-scroll
       class="el-virtual-tree"
       ref="tree"
@@ -26,6 +27,7 @@
       @check-change="handleCheckChange"
       @node-click="handleNodeClick"
       @current-change="handleCurrentChange"
+      @node-contextmenu="handleRightClick"
     >
       <template v-slot="{ node, data }">
         <div>
@@ -38,7 +40,7 @@
                   : 'el-icon-folder'
             "
           ></i>
-          <span>{{ data.id }} - {{ data.label }}</span>
+          <span class="el-tree-node__label">{{ data.id }} - {{ data.label }}</span>
         </div>
       </template>
     </el-tree-virtual-scroll>
@@ -46,12 +48,13 @@
 </template>
 <script>
 import fileStructor from '@/assets/fileStructor.json'
+import { debounce } from 'lodash'
 export default {
   name: 'VirutalTree',
   data() {
     return {
       defaultProps: {
-        disabled: 'isUnable'
+        disabled: 'disabled'
       },
       searchText: '',
       data: [
@@ -129,12 +132,16 @@ export default {
       defaultExpandedKeys: [],
       defaultCheckedKeys: ['二级 3-1', '二级 2-1'],
       defaultCheckedKeys: [],
-      accordion: false
+      accordion: false,
+      timer: null
     }
   },
   watch: {
     searchText(val) {
-      this.$refs.tree.filter(val)
+      if (this.timer) clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.$refs.tree.filter(val)
+      }, 500)
     }
   },
   methods: {
@@ -186,10 +193,17 @@ export default {
       console.log('current-change: ', {
         node: node.data.label
       })
+    },
+    handleRightClick(e, data, node, instance) {
+      console.log(e.clientX, e.clientY)
+      console.log(data.label)
+      console.log(node.data.label)
+      console.log(instance.$options.name, instance)
     }
   },
   created() {},
   mounted() {
+    window.virtualVm = this
     window.tree = this.$refs.tree
     window.root = tree.store.root
   }
@@ -197,7 +211,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .el-virtual-tree {
-  width: 430px;
+  width: 600px;
   height: calc(100vh - 100px);
+}
+.el-icon-folder-opened,
+.el-icon-folder {
+  color: #67c23a;
+}
+.el-icon-document {
+  color: skyblue;
 }
 </style>

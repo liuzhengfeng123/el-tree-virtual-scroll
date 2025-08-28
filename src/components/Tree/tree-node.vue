@@ -59,10 +59,14 @@
 </template>
 <script>
 import { getNodeKey } from './model/util'
+import ElCheckbox from '../checkbox'
+import ElCollapseTransition from '../collapse-transition'
 
 export default {
   name: 'TreeNode',
   components: {
+    ElCheckbox,
+    ElCollapseTransition,
     NodeContent: {
       props: {
         node: {
@@ -225,7 +229,6 @@ export default {
     handleDrop(event) {
       event.preventDefault()
     },
-
     handleDragEnd(event) {
       if (!this.tree.draggable) return
       this.tree.$emit('tree-node-drag-end', event, this)
@@ -233,4 +236,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped></style>

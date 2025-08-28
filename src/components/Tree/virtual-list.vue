@@ -39,10 +39,6 @@ export default {
     },
     isResetScrollCache: Boolean
   },
-  beforeCreate() {
-    this.tree = this.$parent
-    window.virtualListVm = this
-  },
   data() {
     return {
       offsetY: 0,
@@ -70,10 +66,13 @@ export default {
   },
   watch: {
     isResetScrollCache(val) {
-      if(val) {
+      if (val) {
         this.$nextTick(() => this.scroll())
       }
     }
+  },
+  beforeCreate() {
+    this.tree = this.$parent
   },
   created() {},
   mounted() {
@@ -98,7 +97,6 @@ export default {
     },
     scroll() {
       const scrollTop = this.$refs.list.scrollTop
-      // console.log("this.isResetScrollCache: ", this.isResetScrollCache)
       if (
         !this.isResetScrollCache &&
         scrollTop >= this.scrollCache[0] &&
@@ -130,7 +128,6 @@ export default {
 .virtual-scroll__container {
   position: relative;
   overflow: auto;
-  border: 1px solid #000;
 }
 .virtual-scroll__placeHolder {
   position: absolute;

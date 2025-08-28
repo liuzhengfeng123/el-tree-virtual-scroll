@@ -32,6 +32,6 @@ function recursive(directory, include, upperFolder) {
   return arr
 }
 
-let res = recursive(path.resolve(__dirname), ['@babel', '@eslint'], path.resolve(__dirname, '..'))
+let res = recursive(path.resolve(__dirname), ['.bin', '@babel', '@eslint', '@types', '@vue'], path.resolve(__dirname, '..'))
 
 fs.writeFileSync(path.resolve(__dirname, 'src', 'assets', 'fileStructor.json'), JSON.stringify(res))

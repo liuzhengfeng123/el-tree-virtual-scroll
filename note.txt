@@ -1,5 +1,7 @@
-1、全部收缩、全部展开方法
+1、全部收缩、全部展开方法 √
 2、与 element-ui i18 同步
-3、设置 el-checkbox 的 tabindex = -1
-4、去掉 throttle
-5、看看 aria-hidden!
+3、设置 el-checkbox 的 tabindex = -1  √
+5、看看 aria-hidden!  √
+6、虚拟滚动节点为空时的展示 √
+7、删除在 created 钩子中挂在的实例
+4、去掉 throttle !!  √

@@ -1,8 +1,4 @@
 import VueRouter from 'vue-router'
-import NonLazy from '@/views/non-lazy.vue'
-import Lazy from '@/views/lazy.vue'
-import Normal from '@/views/normal.vue'
-import VirtualTree from '@/views/virtual-tree.vue'
 
 const routes = [
   {
@@ -12,22 +8,22 @@ const routes = [
   {
     path: '/non-lazy',
     name: 'nonLazy',
-    component: NonLazy
+    component: () => import('@/views/non-lazy.vue')
   },
   {
     path: '/lazy',
     name: 'lazy',
-    component: Lazy
+    component: () => import('@/views/lazy.vue')
   },
   {
     path: '/normal',
     name: 'normal',
-    component: Normal
+    component: () => import('@/views/normal.vue')
   },
   {
     path: '/virtual',
     name: 'Virtual',
-    component: VirtualTree
+    component: () => import('@/views/virtual-tree.vue')
   }
 ]
 

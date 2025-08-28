@@ -10,11 +10,16 @@
     }"
     tabindex="-1"
     :draggable="tree.draggable"
+    @click.stop="handleClick"
+    @contextmenu="handleContextMenu"
+    @dragstart.stop="handleDragStart"
+    @dragover.stop="handleDragOver"
+    @dragend.stop="handleDragEnd"
+    @drop.stop="handleDrop"
   >
     <div
       class="el-tree-node__content"
       :style="{ paddingLeft: (node.level - 1) * tree.indent + 'px' }"
-      @click.stop="handleClick"
     >
       <span
         :class="[
@@ -40,9 +45,11 @@
   </div>
 </template>
 <script>
+import ElCheckbox from '../checkbox'
 export default {
   name: 'VirtualTreeNode',
   components: {
+    ElCheckbox,
     NodeContent: {
       props: {
         node: {
@@ -94,6 +101,13 @@ export default {
     this.tree = this.$parent.tree
     this.oldChecked = this.node.checked
     this.oldIndeterminate = this.node.indeterminate
+    const props = this.tree.props || {}
+    const childrenKey = props.children || 'children'
+
+    this.$watch(`node.data.${childrenKey}`, () => {
+      this.tree.isResetScrollCache = true
+      this.node.updateChildren()
+    })
   },
   mounted() {},
   methods: {
@@ -153,8 +167,33 @@ export default {
       }
       this.oldChecked = checked
       this.oldIndeterminate = indeterminate
+    },
+    handleContextMenu(event) {
+      if (
+        this.tree._events['node-contextmenu'] &&
+        this.tree._events['node-contextmenu'].length > 0
+      ) {
+        event.stopPropagation()
+        event.preventDefault()
+      }
+      this.tree.$emit('node-contextmenu', event, this.node.data, this.node, this)
+    },
+    handleDragStart(event) {
+      if (!this.tree.draggable) return
+      this.tree.$emit('tree-node-drag-start', event, this)
+    },
+    handleDragOver(event) {
+      if (!this.tree.draggable) return
+      this.tree.$emit('tree-node-drag-over', event, this)
+      event.preventDefault()
+    },
+    handleDrop(event) {
+      event.preventDefault()
+    },
+    handleDragEnd(event) {
+      if (!this.tree.draggable) return
+      this.tree.$emit('tree-node-drag-end', event, this)
     }
   }
 }
 </script>
-<style lang="scss" scoped></style>

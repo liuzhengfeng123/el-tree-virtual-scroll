@@ -1,11 +1,6 @@
-import {
-  hasOwn,
-  isPlainObject,
-  isDef,
-  markNodeData,
-  isUndef,
-  NODE_KEY
-} from './util'
+import { markNodeData, NODE_KEY } from './util'
+
+import { hasOwn, isPlainObject, isDef, isUndef } from '../../utils'
 
 function getPropertyFromData(node, prop) {
   const props = node.store.props || {}
@@ -120,11 +115,7 @@ export default class Node {
       this.expand(null, store.autoExpandParent)
     }
 
-    if (
-      key &&
-      isDef(store.currentNodeKey) &&
-      this.key === store.currentNodeKey
-    ) {
+    if (key && isDef(store.currentNodeKey) && this.key === store.currentNodeKey) {
       store.setCurrentNode(this)
     }
 
@@ -145,9 +136,7 @@ export default class Node {
         children = this.data
       } else {
         /* eslint-disable-next-line no-console */
-        console.error(
-          '[El-Tree-Vritual-Scroll Warn] props.data must be of type array'
-        )
+        console.error('[El-Tree-Vritual-Scroll Warn] props.data must be of type array')
       }
     } else {
       children = getPropertyFromData(this, 'children')
@@ -258,9 +247,7 @@ export default class Node {
         if (isUndef(oldIndex)) {
           this.insertChild({ data: newChildren[i] }, i)
         } else {
-          oldIndex = childNodes.findIndex(
-            (node) => node.data[NODE_KEY] === newNodeKey
-          )
+          oldIndex = childNodes.findIndex((node) => node.data[NODE_KEY] === newNodeKey)
           /**节点还在，但位置改变 */
           if (oldIndex > -1) {
             childNodes.splice(i, 0, ...childNodes.splice(oldIndex, 1))

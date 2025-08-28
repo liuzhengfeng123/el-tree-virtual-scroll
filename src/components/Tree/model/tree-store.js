@@ -1,5 +1,5 @@
 import Node from './node'
-import { hasOwn, isDef, isPlainObject, isUndef } from './util'
+import { hasOwn, isDef, isPlainObject, isUndef } from '../../utils'
 
 export default class TreeStore {
   constructor(options) {

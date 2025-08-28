@@ -10,32 +10,30 @@
     role="tree"
   >
     <virtual-list
-      v-if="height"
+      v-if="height && filterNodes.length > 0"
       :height="height"
       :filter-nodes="filterNodes"
       :item-size="itemSize"
       :node-key="nodeKey"
       :is-reset-scroll-cache="isResetScrollCache"
+      :is-empty="isEmpty"
       @reset="isResetScrollCache = false"
     />
     <div v-else class="normal-tree">
       <tree-node v-for="child in root.childNodes" :key="getNodeKey(child)" :node="child" />
-      <div v-if="isEmpty" class="el-tree__empty-block">
-        <span class="el-tree__empty-text">{{ emptyText }}</span>
-      </div>
-      <div
-        v-show="dragState.showDropIndicator"
-        ref="dropIndicator"
-        class="el-tree__drop-indicator"
-      />
     </div>
+    <div v-if="isEmpty" class="el-tree__empty-block">
+      <span class="el-tree__empty-text">{{ emptyText }}</span>
+    </div>
+    <div v-show="dragState.showDropIndicator" ref="dropIndicator" class="el-tree__drop-indicator" />
   </div>
 </template>
 <script>
 import TreeStore from './model/tree-store'
 import TreeNode from './tree-node'
-import VirtualList from './virutal-list'
-import { findNearestComponent, getNodeKey, addClass, removeClass } from './model/util.js'
+import VirtualList from './virtual-list'
+import { findNearestComponent, getNodeKey } from './model/util.js'
+import { addClass, removeClass } from '../utils'
 
 export default {
   name: 'VirtulTree',
@@ -155,11 +153,11 @@ export default {
       this.store.checkStrictly = newVal
     },
     data(newVal) {
+      this.isResetScrollCache = true
       this.store.setData(newVal)
     }
   },
   created() {
-    window.treeVm = this
     this.isTree = true
     this.store = new TreeStore({
       data: this.data,
@@ -195,7 +193,10 @@ export default {
       this.$emit('node-drag-start', treeNode.node, event)
     })
     this.$on('tree-node-drag-over', (event) => {
-      const dropNode = findNearestComponent(event.target, 'TreeNode')
+      const dropNode = findNearestComponent(
+        event.target,
+        this.height ? 'VirtualTreeNode' : 'TreeNode'
+      )
       const oldDropNode = dragState.dropNode
       if (oldDropNode && oldDropNode !== dropNode) {
         removeClass(oldDropNode.$el, 'is-drop-inner')
@@ -401,6 +402,17 @@ export default {
       if (!this.nodeKey)
         throw new Error('[El-Tree-Vritual-Scroll Warn] nodeKey is required in updateKeyChild')
       this.store.updateChildren(key, data)
+    },
+    collapseAllNode() {
+      function traverse(children) {
+        if (Array.isArray(children)) {
+          children.forEach((child) => {
+            child.expanded = false
+            traverse(child.childNodes || [])
+          })
+        }
+      }
+      traverse(this.root.childNodes)
     }
   }
 }
