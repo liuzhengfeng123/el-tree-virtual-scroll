@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 const routes = [
   {
     path: '',
-    redirect: '/non-lazy'
+    redirect: '/virtual'
   },
   {
     path: '/non-lazy',
@@ -14,11 +14,6 @@ const routes = [
     path: '/lazy',
     name: 'lazy',
     component: () => import('@/views/lazy.vue')
-  },
-  {
-    path: '/normal',
-    name: 'normal',
-    component: () => import('@/views/normal.vue')
   },
   {
     path: '/virtual',

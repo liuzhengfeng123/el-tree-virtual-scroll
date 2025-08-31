@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "webpack serve --open --config build/webpack.dev.js",
     "dev:build": "webpack --config build/webpack.dev.js",
+    "build": "webpack --config build/webpack.config.js && gulp",
     "lint": "eslint",
     "prepare": "husky"
   },
@@ -28,7 +29,10 @@
     "element-ui": "^2.15.14",
     "eslint": "^9.33.0",
     "eslint-plugin-vue": "~10.4.0",
+    "fs-extra": "^11.3.1",
     "globals": "^16.3.0",
+    "gulp": "^5.0.1",
+    "gulp-sass": "^6.0.1",
     "html-webpack-plugin": "^5.6.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",

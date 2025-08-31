@@ -36,7 +36,7 @@ import { findNearestComponent, getNodeKey } from './model/util.js'
 import { addClass, removeClass } from '../utils'
 
 export default {
-  name: 'VirtulTree',
+  name: 'ElTreeVirtualScroll',
   components: {
     TreeNode,
     VirtualList

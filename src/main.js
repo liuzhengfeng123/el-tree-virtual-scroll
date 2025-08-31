@@ -4,16 +4,14 @@ import VueRouter from 'vue-router'
 import router from './router/index.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import VirtualTree from './components/tree'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
+Vue.component('ElTreeVirtualScroll', VirtualTree)
 
-import ElTreeVirtualScroll from './components/tree'
-Vue.component('ElTreeVirtualScroll', ElTreeVirtualScroll)
 
-window.Vue = Vue
-
-window.Vm = new Vue({
+new Vue({
   router,
   render: (h) => h(App)
 }).$mount('#app')

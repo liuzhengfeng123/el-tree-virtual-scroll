@@ -19,7 +19,13 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   devServer: {
-    static: '../examples'
+    static: '../examples',
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false
+      }
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({

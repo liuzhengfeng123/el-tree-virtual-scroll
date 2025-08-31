@@ -97,28 +97,58 @@ export default class TreeStore {
     refNode.parent.insertAfter({ data }, refNode)
   }
 
+  // filter(value) {
+  //   const filterNodeMethod = this.filterNodeMethod
+  //   const lazy = this.lazy
+  //   function traverse(node) {
+  //     const childNodes = node.childNodes
+  //     if (node.level > 0) {
+  //       node.visible = filterNodeMethod.call(node, value, node.data, node)
+  //     }
+  //     /**非叶子节点 */
+  //     if (Array.isArray(childNodes) && childNodes.length > 0) {
+  //       childNodes.forEach(traverse)
+
+  //       if (!node.visible && childNodes.some((child) => child.visible)) {
+  //         node.visible = true
+  //       }
+
+  //       if (!value) return
+
+  //       if (node.visible && !lazy) node.expand()
+  //     }
+  //   }
+  //   traverse(this.root)
+  // }
+
   filter(value) {
     const filterNodeMethod = this.filterNodeMethod
     const lazy = this.lazy
-    function traverse(node) {
-      const childNodes = node.childNodes
-      if (node.level > 0) {
-        node.visible = filterNodeMethod.call(node, value, node.data, node)
-      }
-      /**非叶子节点 */
-      if (Array.isArray(childNodes) && childNodes.length > 0) {
-        childNodes.forEach(traverse)
+    const traverse = function (node) {
+      const childNodes = node.root ? node.root.childNodes : node.childNodes
 
-        if (!node.visible && childNodes.some((child) => child.visible)) {
-          node.visible = true
+      childNodes.forEach((child) => {
+        child.visible = filterNodeMethod.call(child, value, child.data, child)
+
+        traverse(child)
+      })
+
+      if (!node.visible && childNodes.length) {
+        let allHidden = true
+        allHidden = !childNodes.some((child) => child.visible)
+
+        if (node.root) {
+          node.root.visible = allHidden === false
+        } else {
+          node.visible = allHidden === false
         }
-
-        if (!value) return
-
-        if (node.visible && !lazy) node.expand()
       }
+      if (!value) return
+
+      if (node.visible && !node.isLeaf && !lazy) node.expand()
     }
-    traverse(this.root)
+
+    traverse(this)
   }
 
   setDefaultExpandedKeys(keys) {

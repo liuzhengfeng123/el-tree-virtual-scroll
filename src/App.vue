@@ -1,33 +1,39 @@
 <template>
   <div class="app-container">
-    list: {{ list }}
-     <!-- <router-link to="/">non-lazy</router-link>
-     <router-link style="margin-left: 10px;" to="/lazy">lazy</router-link>
-     <router-link style="margin-left: 10px;" to="/normal">normal</router-link> -->
-     <router-view></router-view>
+    <el-radio-group v-model="route" size="medium">
+      <el-radio-button label="/virtual">虚拟滚动</el-radio-button>
+      <el-radio-button label="/non-lazy">非虚拟滚动非懒加载</el-radio-button>
+      <el-radio-button label="/lazy">非虚拟滚动懒加载</el-radio-button>
+    </el-radio-group>
+    <el-divider></el-divider>
+    <router-view></router-view>
   </div>
 </template>
 <script>
 export default {
-  name: "App",
-  components: {
-  },
+  name: 'App',
+  components: {},
   data() {
-    return {
-      list: ('Baby One More Time').split(' ')
+    return {}
+  },
+  computed: {
+    route: {
+      get() {
+        return this.$route.path
+      },
+      set(val) {
+        this.$router.push(val)
+      }
     }
   },
-  watch: {
-    list(newVal) {
-      console.log('list has changed')
-    }
-  },
+  watch: {},
   methods: {},
-  created() {
-    window.appVm = this
-  },
-  mounted() {
-  }
+  created() {},
+  mounted() {}
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+body {
+  margin: 0;
+}
+</style>
