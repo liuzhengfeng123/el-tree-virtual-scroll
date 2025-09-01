@@ -1,10 +1,6 @@
 <template>
   <div class="non-lazy-page">
-    <el-tree-virtual-scroll
-      ref="tree"
-      :data="data"
-      :props="defaultProps"
-    >
+    <el-tree-virtual-scroll ref="tree" :data="data" :props="defaultProps" default-expand-all>
     </el-tree-virtual-scroll>
   </div>
 </template>
@@ -13,9 +9,7 @@ export default {
   name: 'NonLazy',
   data() {
     return {
-      defaultProps: {
-        label: 'label',
-      },
+      defaultProps: {},
       data: [
         {
           label: '一级 1',
@@ -84,14 +78,12 @@ export default {
         {
           label: '一级 4'
         }
-      ],
+      ]
     }
   },
-  methods: {
-  },
   created() {},
-  mounted() {
-  }
+  mounted() {},
+  methods: {}
 }
 </script>
 <style lang="scss" scoped></style>

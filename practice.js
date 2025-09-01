@@ -18,9 +18,9 @@ function recursive(directory, include, upperFolder) {
     const stats = fs.statSync(filePath)
     const isDirectory = stats.isDirectory()
     if (
-      (isDirectory && upperFolder === 'node_modules' && include.includes(fileName)) ||
-      (isDirectory && upperFolder !== 'node_modules')
-      // isDirectory && fileName !== 'node_modules'
+      isDirectory
+      // (isDirectory && upperFolder === 'node_modules' && include.includes(fileName)) ||
+      // (isDirectory && upperFolder !== 'node_modules')
     ) {
       obj.isLeaf = false
       obj.children = recursive(filePath, include, fileName)
@@ -40,11 +40,44 @@ let res = recursive(
     '@eslint',
     '@types',
     '@vue',
+    'b4a',
     'babel-plugin-polyfill-corejs2',
     'babel-plugin-polyfill-corejs3',
     'call-bind-apply-helpers',
     'dot-case',
-    'lint-staged'
+    'lint-staged',
+    'babel-runtime',
+    'math-intrinsics',
+    'resolve',
+    'send',
+    'postcss-selector-parser',
+    'webpack-merge',
+    'webpack-dev-server',
+    'vue-loader',
+    'vue-eslint-parser',
+    'proxy-addr',
+    'webpack-dev-middleware',
+    'webpack-cli',
+    'vue-router',
+    'throttle-debounce',
+    'thingies',
+    'es-object-atoms',
+    'es-module-lexer',
+    'es-errors',
+    'es-module-lexer',
+    'domelementtype',
+    'caniuse-lite',
+    'call-bind-apply-helpers',
+    'braces',
+    'assign-symbols',
+    'undertaker',
+    'tslib',
+    'supports-preserve-symlinks-flag',
+    'css-loader',
+    'core-util-is',
+    'concat-map',
+    'call-bound',
+    'babel-plugin-polyfill-regenerator'
   ],
   path.resolve(__dirname, '..')
 )

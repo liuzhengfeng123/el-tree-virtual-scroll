@@ -1,23 +1,18 @@
 const path = require('path')
+const { merge } = require('webpack-merge')
 const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const common = require('./webpack.common')
 
-module.exports = {
+module.exports = merge(common, {
   mode: 'development',
-  context: path.resolve(__dirname, '..'),
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, '../examples'),
     filename: 'index.js',
     clean: true
   },
-  resolve: {
-    extensions: ['.js', '.vue', '.json'],
-    alias: {
-      '@': path.resolve(__dirname, '../src')
-    },
-  },
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-source-map',
   devServer: {
     static: '../examples',
     client: {
@@ -33,43 +28,6 @@ module.exports = {
       inject: 'body'
     }),
     new VueLoaderPlugin()
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
-        exclude: (file) => {
-          return /node_modules/.test(file)
-        },
-        use: ['babel-loader']
-      },
-      {
-        test: /\.css$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-        ],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-      },
-    ]
-  }
+  ]
 }
+)

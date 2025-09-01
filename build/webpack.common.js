@@ -1,29 +1,14 @@
 const path = require('path')
-const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
-  mode: 'production',
   context: path.resolve(__dirname, '..'),
-  entry: './index.js',
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: 'el-tree-virtual-scroll.js',
-    clean: true,
-    library: {
-      name: 'elTreeVirtualScroll',
-      type: 'umd'
-    }
-  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
+    symlinks: false,
     alias: {
       '@': path.resolve(__dirname, '../src')
     },
   },
-  devtool: 'source-map',
-  plugins: [
-    new VueLoaderPlugin()
-  ],
   module: {
     rules: [
       {

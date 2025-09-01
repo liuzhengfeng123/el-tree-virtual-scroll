@@ -5,6 +5,7 @@ export default class TreeStore {
   constructor(options) {
     this.currentNode = null
     this.currentNodeKey = null
+    this.filterNodeMethod = null
 
     for (let option in options) {
       if (hasOwn(options, option)) {
@@ -97,58 +98,29 @@ export default class TreeStore {
     refNode.parent.insertAfter({ data }, refNode)
   }
 
-  // filter(value) {
-  //   const filterNodeMethod = this.filterNodeMethod
-  //   const lazy = this.lazy
-  //   function traverse(node) {
-  //     const childNodes = node.childNodes
-  //     if (node.level > 0) {
-  //       node.visible = filterNodeMethod.call(node, value, node.data, node)
-  //     }
-  //     /**非叶子节点 */
-  //     if (Array.isArray(childNodes) && childNodes.length > 0) {
-  //       childNodes.forEach(traverse)
-
-  //       if (!node.visible && childNodes.some((child) => child.visible)) {
-  //         node.visible = true
-  //       }
-
-  //       if (!value) return
-
-  //       if (node.visible && !lazy) node.expand()
-  //     }
-  //   }
-  //   traverse(this.root)
-  // }
-
   filter(value) {
-    const filterNodeMethod = this.filterNodeMethod
     const lazy = this.lazy
-    const traverse = function (node) {
-      const childNodes = node.root ? node.root.childNodes : node.childNodes
-
-      childNodes.forEach((child) => {
-        child.visible = filterNodeMethod.call(child, value, child.data, child)
-
-        traverse(child)
-      })
-
-      if (!node.visible && childNodes.length) {
-        let allHidden = true
-        allHidden = !childNodes.some((child) => child.visible)
-
-        if (node.root) {
-          node.root.visible = allHidden === false
-        } else {
-          node.visible = allHidden === false
+    let stack = [...this.root.childNodes]
+    while(stack.length > 0) {
+      const node = stack.pop()
+      node.visible = this.filterNodeMethod.call(node, value, node.data, node)
+      if(node.visible) {
+        if(lazy) {
+          node.expanded = true
+        }
+        let parent = node.parent
+        while(parent) {
+          parent.visible = true
+          if(lazy) {
+            parent.expanded = true
+          }
+          parent = parent.parent
         }
       }
-      if (!value) return
-
-      if (node.visible && !node.isLeaf && !lazy) node.expand()
+      for(let i = node.childNodes.length - 1; i >= 0; i--) {
+        stack.push(node.childNodes[i])
+      }
     }
-
-    traverse(this)
   }
 
   setDefaultExpandedKeys(keys) {

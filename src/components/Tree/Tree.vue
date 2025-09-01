@@ -9,22 +9,29 @@
     }"
     role="tree"
   >
-    <virtual-list
-      v-if="height && filterNodes.length > 0"
-      :height="height"
-      :filter-nodes="filterNodes"
-      :item-size="itemSize"
-      :node-key="nodeKey"
-      :is-reset-scroll-cache="isResetScrollCache"
-      :is-empty="isEmpty"
-      @reset="isResetScrollCache = false"
-    />
-    <div v-else class="normal-tree">
-      <tree-node v-for="child in root.childNodes" :key="getNodeKey(child)" :node="child" />
-    </div>
-    <div v-if="isEmpty" class="el-tree__empty-block">
-      <span class="el-tree__empty-text">{{ emptyText }}</span>
-    </div>
+    <template v-if="height">
+      <virtual-list
+        v-if="height && filterNodes.length > 0"
+        :height="height"
+        :filter-nodes="filterNodes"
+        :item-size="itemSize"
+        :node-key="nodeKey"
+        :is-reset-scroll-cache="isResetScrollCache"
+        :is-empty="isEmpty"
+        @reset="isResetScrollCache = false"
+      />
+      <div v-if="isEmpty" class="el-tree__empty-block">
+        <span class="el-tree__empty-text">{{ emptyText }}</span>
+      </div>
+    </template>
+    <template v-else>
+      <div class="normal-tree">
+        <tree-node v-for="child in root.childNodes" :key="getNodeKey(child)" :node="child" />
+      </div>
+      <div v-if="isEmpty" class="el-tree__empty-block">
+        <span class="el-tree__empty-text">{{ emptyText }}</span>
+      </div>
+    </template>
     <div v-show="dragState.showDropIndicator" ref="dropIndicator" class="el-tree__drop-indicator" />
   </div>
 </template>
@@ -408,6 +415,17 @@ export default {
         if (Array.isArray(children)) {
           children.forEach((child) => {
             child.expanded = false
+            traverse(child.childNodes || [])
+          })
+        }
+      }
+      traverse(this.root.childNodes)
+    },
+    expandAllNode() {
+      function traverse(children) {
+        if (Array.isArray(children)) {
+          children.forEach((child) => {
+            child.expanded = true
             traverse(child.childNodes || [])
           })
         }

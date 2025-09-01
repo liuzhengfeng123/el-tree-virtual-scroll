@@ -6,13 +6,18 @@
       placeholder="Please enter keyword"
       @input="onQueryChanged"
     />
+    <el-button type="primary" @click="$refs.tree.expandAllNode()">expand all</el-button>
+    <el-button type="info" @click="$refs.tree.collapseAllNode()">collapse all</el-button>
     <el-tree-virtual-scroll
-      class="el-virtual-tree"
       ref="tree"
+      class="el-virtual-tree"
       :data="data"
       :props="defaultProps"
       height="calc(100vh - 100px)"
+      node-key="id"
       :filter-node-method="filterMethod"
+      default-expand-all
+      show-checkbox
     >
       <template v-slot="{ node, data }">
         <div>
@@ -58,10 +63,7 @@ export default {
   name: 'VirutalTree',
   data() {
     return {
-      defaultProps: {
-        disabled: 'disabled',
-        label: 'label'
-      },
+      defaultProps: {},
       query: '',
       data: createData(4, 20, 20),
       defaultExpandAll: true
@@ -69,15 +71,22 @@ export default {
   },
   watch: {},
   methods: {
-    filterMethod(query, node) {
-      return node.label.includes(query)
-    },
-    onQueryChanged(query) {
-      this.$refs.tree.filter(query)
-    }
   },
-  created() {},
-  mounted() {}
+  created() {
+    let count = 0
+    function t(children) {
+      children.forEach((child) => {
+        count++
+        if (Array.isArray(child.children)) {
+          t(child.children)
+        }
+      })
+    }
+    t(this.data)
+    console.log({ count })
+  },
+  mounted() {
+  }
 }
 </script>
 <style lang="scss" scoped>
