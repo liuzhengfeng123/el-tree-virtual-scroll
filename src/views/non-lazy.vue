@@ -1,7 +1,15 @@
 <template>
   <div class="non-lazy-page">
-    <el-tree-virtual-scroll ref="tree" :data="data" :props="defaultProps" default-expand-all>
+    <el-tree-virtual-scroll
+      ref="tree"
+      :data="data"
+      :props="defaultProps"
+      :filter-node-method="filterNode"
+      default-expand-all
+    >
     </el-tree-virtual-scroll>
+    <hr />
+    <el-button type="primary" @click="handleClick">click me</el-button>
   </div>
 </template>
 <script>
@@ -10,6 +18,7 @@ export default {
   data() {
     return {
       defaultProps: {},
+      count: 0,
       data: [
         {
           label: '一级 1',
@@ -82,8 +91,17 @@ export default {
     }
   },
   created() {},
-  mounted() {},
-  methods: {}
+  mounted() {
+  },
+  beforeDestroy() {},
+  methods: {
+    handleClick() {
+      this.$refs.tree.test()
+    },
+    filterNode(val, data) {
+      return data.label.includes(val)
+    }
+  }
 }
 </script>
 <style lang="scss" scoped></style>

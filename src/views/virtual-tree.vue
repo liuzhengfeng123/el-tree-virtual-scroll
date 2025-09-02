@@ -71,6 +71,12 @@ export default {
   },
   watch: {},
   methods: {
+    onQueryChanged() {
+      this.$refs.tree.filter(this.query)
+    },
+    filterMethod(val, data) {
+      return data.label.includes(val)
+    }
   },
   created() {
     let count = 0
