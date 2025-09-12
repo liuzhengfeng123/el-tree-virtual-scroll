@@ -3,19 +3,36 @@ const { VueLoaderPlugin } = require('vue-loader')
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common')
 
-module.exports = merge(common, {
+const common2 = {
   mode: 'production',
   entry: './index.js',
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: 'el-tree-virtual-scroll.js',
-    clean: true,
-    library: {
-      name: 'elTreeVirtualScroll',
-      type: 'umd'
+  plugins: [new VueLoaderPlugin()]
+}
+
+module.exports = [
+  merge(common, {
+    ...common2,
+    experiments: {
+      outputModule: true // 关键：启用 ESM 输出
+    },
+    output: {
+      filename: 'el-tree-virtual-scroll.esm.js',
+      path: path.resolve(__dirname, '../dist'),
+      library: {
+        type: 'module' // 输出 ES Module
+      }
+    },
+  }),
+  merge(common, {
+    ...common2,
+    output: {
+      path: path.resolve(__dirname, '../dist'),
+      filename: 'el-tree-virtual-scroll.umd.js',
+      library: {
+        name: 'elTreeVirtualScroll',
+        type: 'umd'
+      },
+      globalObject: 'typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this'
     }
-  },
-  plugins: [
-    new VueLoaderPlugin()
-  ],
-})
+  })
+]

@@ -4,32 +4,14 @@ const plguinVue = require('eslint-plugin-vue')
 const globals = require('globals')
 
 module.exports = defineConfig([
-  // 校验 .vue 文件
   {
-    files: ['src/components/Tree/**'],
-    extends: [
-      ...plguinVue.configs['flat/vue2-recommended']
-    ],
-    rules: {
-      'vue/require-default-prop': "off",
-      "vue/max-attributes-per-line": ["error", {
-        "singleline": {
-          "max": 3
-        },
-        "multiline": {
-          "max": 2
-        }
-      }]
-    }
-  },
-  // 校验 js 代码
-  {
-    files: ['src/**'],
+    files: ['src/**/*.js', 'src/components/**/*.vue'],
     plugins: {
       js
     },
     extends: [
-      js.configs.recommended
+      js.configs.recommended,
+      ...plguinVue.configs['flat/vue2-recommended']
     ],
     languageOptions: {
       ecmaVersion: 'latest',
@@ -41,6 +23,20 @@ module.exports = defineConfig([
       reportUnusedDisableDirectives: "error"
     },
     rules: {
+      // vue 规则
+      "vue/v-bind-style": "error",
+      "vue/no-console": "error",
+      'vue/require-default-prop': "off",
+      "vue/max-attributes-per-line": ["error", {
+        "singleline": {
+          "max": 3
+        },
+        "multiline": {
+          "max": 2
+        }
+      }],
+      // 其他
+      "no-self-compare": "error",
       // 基本规则
       'no-console': 'error', // 禁止使用console
       'no-debugger': 'error', // 禁止使用debugger

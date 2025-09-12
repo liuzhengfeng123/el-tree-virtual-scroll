@@ -2,13 +2,18 @@
   "name": "el-tree-virtual-scroll",
   "version": "1.0.0",
   "description": "A Virtual Scrolling Tree Implementation Using Element-UI's el-tree",
-  "main": "lib/el-tree-virtual-scroll.js",
-  "directories": {
-    "example": "examples"
+  "main": "dist/el-tree-virtual-scroll.umd.js",
+  "module": "dist/el-tree-virtual-scroll.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/el-tree-virtual-scroll.esm.js",
+      "require": "./dist/el-tree-virtual-scroll.umd.js"
+    }
   },
   "scripts": {
     "dev": "webpack serve --open --config build/webpack.dev.js",
-    "build": "webpack --config build/webpack.prod.js && gulp",
+    "build": "npm run clean && webpack --config build/webpack.prod.js && gulp",
+    "clean": "rimraf dist",
     "lint": "eslint",
     "prepare": "husky"
   },
@@ -18,6 +23,18 @@
     ]
   },
   "author": "liuzhengfeng <563596927@qq.com>",
+  "keywords": [
+    "vue",
+    "el-tree-virtual-scroll",
+    "virtual",
+    "scroll",
+    "el-tree",
+    "ElementUI"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liuzhengfeng123/el-tree-virtual-scroll.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.28.3",
@@ -36,6 +53,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
     "prettier": "3.6.2",
+    "rimraf": "^6.0.1",
     "sass": "^1.89.2",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
