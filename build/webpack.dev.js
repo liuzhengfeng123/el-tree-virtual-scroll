@@ -1,6 +1,5 @@
 const path = require('path')
 const { merge } = require('webpack-merge')
-const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const common = require('./webpack.common')
 
@@ -27,7 +26,6 @@ module.exports = merge(common, {
       template: path.resolve(__dirname, 'index.html'),
       inject: 'body'
     }),
-    new VueLoaderPlugin()
   ]
 }
 )

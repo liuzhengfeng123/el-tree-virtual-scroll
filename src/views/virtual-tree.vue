@@ -65,7 +65,7 @@ export default {
     return {
       defaultProps: {},
       query: '',
-      data: createData(4, 20, 20),
+      data: createData(4, 15, 20),
       defaultExpandAll: true
     }
   },

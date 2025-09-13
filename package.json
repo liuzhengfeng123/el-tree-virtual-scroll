@@ -4,10 +4,15 @@
   "description": "A Virtual Scrolling Tree Implementation Using Element-UI's el-tree",
   "main": "dist/el-tree-virtual-scroll.umd.js",
   "module": "dist/el-tree-virtual-scroll.esm.js",
+  "types": "index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/el-tree-virtual-scroll.esm.js",
-      "require": "./dist/el-tree-virtual-scroll.umd.js"
+      "require": "./dist/el-tree-virtual-scroll.umd.js",
+      "types": {
+        "default": "./dist/index.d.ts",
+        "require": "./dist/index.d.cts"
+      }
     }
   },
   "scripts": {

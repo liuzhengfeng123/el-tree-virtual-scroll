@@ -1,17 +1,14 @@
 const path = require('path')
-const { VueLoaderPlugin } = require('vue-loader')
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common')
 
-const common2 = {
+const prodModeCommon = {
   mode: 'production',
-  entry: './index.js',
-  plugins: [new VueLoaderPlugin()]
+  entry: './index.js'
 }
 
 module.exports = [
-  merge(common, {
-    ...common2,
+  merge(common, prodModeCommon, {
     experiments: {
       outputModule: true // 关键：启用 ESM 输出
     },
@@ -21,10 +18,9 @@ module.exports = [
       library: {
         type: 'module' // 输出 ES Module
       }
-    },
+    }
   }),
-  merge(common, {
-    ...common2,
+  merge(common, prodModeCommon, {
     output: {
       path: path.resolve(__dirname, '../dist'),
       filename: 'el-tree-virtual-scroll.umd.js',
@@ -32,7 +28,8 @@ module.exports = [
         name: 'elTreeVirtualScroll',
         type: 'umd'
       },
-      globalObject: 'typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this'
+      globalObject:
+        'typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : this'
     }
   })
 ]

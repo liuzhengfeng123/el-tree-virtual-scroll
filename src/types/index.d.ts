@@ -1,0 +1,2 @@
+declare const ElTreeVirtualScroll: any
+export default ElTreeVirtualScroll
