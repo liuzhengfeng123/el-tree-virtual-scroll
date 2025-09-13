@@ -105,13 +105,13 @@ export default class TreeStore {
       const node = stack.pop()
       node.visible = this.filterNodeMethod.call(node, value, node.data, node)
       if(node.visible) {
-        if(lazy) {
+        if(!lazy) {
           node.expanded = true
         }
         let parent = node.parent
         while(parent) {
           parent.visible = true
-          if(lazy) {
+          if(!lazy) {
             parent.expanded = true
           }
           parent = parent.parent

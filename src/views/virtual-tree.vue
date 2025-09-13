@@ -13,10 +13,11 @@
       class="el-virtual-tree"
       :data="data"
       :props="defaultProps"
-      height="calc(100vh - 100px)"
+      :item-size="36"
+      height="500px"
       node-key="id"
       :filter-node-method="filterMethod"
-      default-expand-all
+      :default-expand-all="false"
       show-checkbox
     >
       <template v-slot="{ node, data }">
@@ -107,5 +108,13 @@ export default {
   &.is-leaf {
     color: #67c23a;
   }
+}
+
+.el-virtual-tree {
+  border: 1px solid #000;
+}
+
+.virtual-tree-page ::v-deep .el-tree-node__content {
+  height: 36px;
 }
 </style>
