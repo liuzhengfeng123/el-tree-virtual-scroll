@@ -1,6 +1,6 @@
 {
   "name": "el-tree-virtual-scroll",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Virtual Scrolling Tree Implementation Using Element-UI's el-tree",
   "main": "dist/el-tree-virtual-scroll.umd.js",
   "module": "dist/el-tree-virtual-scroll.esm.js",
