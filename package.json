@@ -13,7 +13,8 @@
         "default": "./dist/index.d.ts",
         "require": "./dist/index.d.cts"
       }
-    }
+    },
+    "./styles/*": "./dist/styles/*"
   },
   "scripts": {
     "dev": "webpack serve --open --config build/webpack.dev.js",

@@ -5,11 +5,11 @@ const fse = require('fs-extra')
 function compileSass() {
   return src('./src/assets/styles/*.scss')
     .pipe(sass.sync({ style: 'compressed' }))
-    .pipe(dest('./dist/lib'))
+    .pipe(dest('./dist/styles'))
 }
 
 function copyFont(cb) {
-  fse.copy('./src/assets/styles/fonts', './dist/lib/fonts')
+  fse.copy('./src/assets/styles/fonts', './dist/styles/fonts')
   fse.copy('./src/types/index.d.ts', './dist/index.d.ts')
   fse.copy('./src/types/index.d.cts', './dist/index.d.cts')
   cb()
