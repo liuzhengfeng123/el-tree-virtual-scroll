@@ -10,8 +10,6 @@ function compileSass() {
 
 function copyFont(cb) {
   fse.copy('./src/assets/styles/fonts', './dist/styles/fonts')
-  fse.copy('./src/types/index.d.ts', './dist/index.d.ts')
-  fse.copy('./src/types/index.d.cts', './dist/index.d.cts')
   cb()
 }
 
